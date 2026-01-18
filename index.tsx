@@ -161,7 +161,7 @@ const Chatbot = () => {
     setIsLoading(true);
 
     try {
-      const ai = new GoogleGenAI({ apiKey: "AIzaSyAtmZ6XpCqjWEhPVmJHosAAz4tZQDOwzqQ" });
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY;});
       
       const contextData = {
         personal: PERSONAL_INFO,
@@ -818,7 +818,6 @@ const App = () => {
       <Timeline />
       <Publications />
       <Footer />
-      <Chatbot />
     </div>
   );
 };
