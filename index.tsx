@@ -1,0 +1,1 @@
+// This file is no longer needed. All logic has been moved to index.html for easier GitHub Pages deployment.
