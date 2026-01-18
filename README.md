@@ -1,24 +1,28 @@
 # Victor M. Martinez-Arias Portfolio
 
-This is a single-page React portfolio designed for a biologist and researcher. It includes sections for Bio, Research Interests, Experience, Publications, and an AI Chatbot powered by Google Gemini.
+This is a single-page React portfolio designed for a biologist and researcher. It includes sections for Bio, Research Interests, Experience, Publications, and an AI Chatbot powered by Chatbase.
 
 ## Deployment to GitHub Pages
 
 This project is designed to run directly in the browser using ES Modules and Babel Standalone, making deployment to GitHub Pages very simple.
 
-### Steps:
+### Steps to Publish:
 
-1.  **Create a Repository:** Create a new public repository on GitHub (e.g., `portfolio`).
-2.  **Upload Files:** Upload `index.html` and `index.tsx` to the root of the repository. Also upload your images (`P1080838.JPG`, `P1090332.JPG`, etc.) to the root.
-3.  **Configure API Key:**
-    *   Open `index.tsx`.
-    *   Find the line: `apiKey: process.env.API_KEY`.
-    *   Replace `process.env.API_KEY` with your actual Google Gemini API Key string (e.g., `"AIzaSy..."`).
-    *   *Note:* Since this is a frontend-only site, your API key will be visible in the source code. For a personal portfolio with free tier limits, this is often acceptable, but be aware of the security implication.
+1.  **Create a Repository:** Create a new public repository on GitHub.
+2.  **Upload Files:** Upload `index.html` to the root of the repository.
+3.  **Upload Images:** Upload your photos to the root folder using exactly these names:
+    *   `hero.jpg` (Main background landscape/waterfall)
+    *   `profile.jpg` (Profile picture)
+    *   `mammal.jpg` (Opossum/Mammal photo)
+    *   `team.jpg` (Black and white team photo)
 4.  **Enable Pages:**
     *   Go to Repository Settings -> Pages.
     *   Select Source: `Deploy from a branch`.
     *   Branch: `main` / Folder: `/ (root)`.
     *   Click Save.
 
-Your site will be live at `https://your-username.github.io/portfolio`.
+Your site will be live at `https://your-username.github.io/repo-name`.
+
+### Chatbot Configuration
+
+The chatbot is integrated via [Chatbase](https://www.chatbase.co). To modify the greeting message ("Initial Message") or the training data, you must log in to your Chatbase dashboard. No code changes are needed here.
