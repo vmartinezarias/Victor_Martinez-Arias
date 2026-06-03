@@ -19,72 +19,28 @@
 
     <style>
       :root {
-        --primary: #2c5530; /* Forest Green */
-        --secondary: #5e7c62; /* Sage */
-        --accent: #d4a373; /* Earthy Gold */
+        --primary: #2c5530;
+        --secondary: #5e7c62;
+        --accent: #d4a373;
         --text-main: #1f2937;
         --text-light: #6b7280;
         --bg-light: #f9fafb;
         --white: #ffffff;
       }
-      
-      body {
-        margin: 0;
-        font-family: 'Inter', sans-serif;
-        color: var(--text-main);
-        background-color: var(--white);
-        line-height: 1.6;
-      }
-
-      h1, h2, h3, h4, h5, h6 {
-        font-family: 'Merriweather', serif;
-        color: var(--primary);
-        margin-top: 0;
-      }
-
-      a {
-        text-decoration: none;
-        color: inherit;
-        transition: color 0.3s ease;
-      }
-
-      .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-      }
-      
-      .section-padding {
-        padding: 80px 0;
-      }
-
-      html {
-        scroll-behavior: smooth;
-      }
-
-      /* Animations */
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-
-      @keyframes slideUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-
-      /* Utility for components */
-      .btn-hover:hover {
-        transform: scale(1.05);
-        transition: transform 0.2s ease;
-      }
+      body { margin: 0; font-family: 'Inter', sans-serif; color: var(--text-main); background-color: var(--white); line-height: 1.6; }
+      h1, h2, h3, h4, h5, h6 { font-family: 'Merriweather', serif; color: var(--primary); margin-top: 0; }
+      a { text-decoration: none; color: inherit; transition: color 0.3s ease; }
+      .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+      .section-padding { padding: 80px 0; }
+      html { scroll-behavior: smooth; }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+      .btn-hover:hover { transform: scale(1.05); transition: transform 0.2s ease; }
     </style>
 </head>
 <body>
     <div id="root"></div>
 
     <script type="text/babel">
-        // --- ICONS (SVG Components to avoid external dependencies) ---
         const Icons = {
             MapPin: ({size=24, color="currentColor"}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>,
             Mail: ({size=24, color="currentColor"}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>,
@@ -98,73 +54,87 @@
             GraduationCap: ({size=24, color="currentColor"}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>,
             Briefcase: ({size=24, color="currentColor"}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>,
             Layers: ({size=24, color="currentColor"}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>,
-            MessageCircle: ({size=24, color="currentColor"}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"/></svg>,
-            Send: ({size=24, color="currentColor"}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>,
-            Loader2: ({size=24, color="currentColor", className=""}) => <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
         };
 
-        // --- DATA ---
         const PERSONAL_INFO = {
             name: "Victor M. Martinez-Arias",
-            title: "Biologist | MSc. Forest & Environmental Conservation | PhD Candidate",
+            title: "Landscape Ecologist & GIS Specialist | PhD Candidate in Biology",
             email: "vmanuel.martinez@udea.edu.co",
             location: "Antioquia, Colombia",
             orcid: "0000-0002-3328-130X",
             scholar: "https://scholar.google.com/citations?hl=es&user=wfx4nqIAAAAJ",
             affiliation: "Member of GHA - Grupo Herpetológico de Antioquia",
-            bio: "Biologist, MSc, and PhD Candidate in Biology with extensive experience in spatial and landscape ecology, ecoacoustics, mammal systematics, and conservation biology. Specialized in data collection, processing, and analysis using multivariate statistics and GIS. I focus on understanding connectivity, soundscapes, and biodiversity patterns to inform conservation strategies.",
+            bio: "Landscape ecologist and GIS specialist with experience in ecological connectivity, forest conservation, landscape restoration, biodiversity assessment, habitat fragmentation, deforestation monitoring, remote sensing, ecoacoustics, and spatial modelling. I have supported environmental and conservation projects involving land-use analysis, species distribution modelling, thematic mapping, geodatabase management, and technical reporting for NGOs, consulting firms, universities, and international partners.",
         };
 
         const INTERESTS = [
-            {
-                title: "Ecoacoustics",
-                description: "Analyzing soundscapes to understand biodiversity patterns and ecosystem health using advanced processing tools.",
-                icon: "Mic2",
-            },
-            {
-                title: "Landscape Ecology",
-                description: "Studying spatial heterogeneity and its impact on ecological processes, connectivity, and species distribution.",
-                icon: "Trees",
-            },
-            {
-                title: "Mammalogy",
-                description: "Researching mammal systematics, taxonomy, and conservation (Mastozoología), with a focus on Neotropical species.",
-                icon: "Activity",
-            }
+            { title: "Ecoacoustics", description: "Analyzing soundscapes to understand biodiversity patterns and ecosystem health using advanced processing tools.", icon: "Mic2" },
+            { title: "Landscape Ecology", description: "Studying spatial heterogeneity and its impact on ecological processes, connectivity, and species distribution.", icon: "Trees" },
+            { title: "Mammalogy", description: "Researching mammal systematics, taxonomy, and conservation (Mastozoología), with a focus on Neotropical species.", icon: "Activity" }
         ];
 
         const EXPERIENCE = [
             {
-                role: "PhD Candidate in Biology",
+                role: "GIS and Landscape Connectivity Specialist",
+                org: "Fundación Cunaguaro",
+                period: "Apr 2024 - Present",
+                desc: "Spatial analyses for conservation planning, biodiversity management, and landscape-scale restoration across the Orinoquía region. Supporting BMUV-IKI, Conserva-Aves, CLOS, and partners including WWF, TNC, and Fondo Acción.",
+            },
+            {
+                role: "External Consultant in Landscape Ecology and Ecological Connectivity",
+                org: "Fundación Batis",
+                period: "Apr 2026 - May 2026",
+                desc: "Functional and structural connectivity analyses for an INVEMAR project in the San Andrés, Providencia and Santa Catalina Archipelago using MaxEnt, Sentinel-2, circuit-theory, and landscape metrics.",
+            },
+            {
+                role: "Landscape Ecologist and Spatial Planning Specialist",
+                org: "Corporación Merceditas, Arale Constructores & Municipality of Envigado",
+                period: "May 2025 - Jan 2026",
+                desc: "Environmental component of the Envigado Land-Use Plan (POT) update: high-resolution land-cover mapping, ecological connectivity modelling for 14 species, and spatial prioritization with Zonation.",
+            },
+            {
+                role: "Environmental Scientist / Consultant",
+                org: "Corporación Merceditas",
+                period: "Apr 2011 - Present",
+                desc: "Consultant and technical coordinator in over 33 environmental projects related to mammals, fauna management, ecological connectivity, spatial and data analysis, and bioacoustics.",
+            },
+            {
+                role: "Soundscape and Data Analyst",
                 org: "Universidad de Antioquia",
-                period: "2022 - Present",
-                desc: "Advisor: PhD. Juan M. Daza Rojas. Focusing on ecoacoustics and landscape ecology.",
+                period: "Apr 2021 - Mar 2022",
+                desc: "Bioacoustic and soundscape analyst for ecoacoustic projects Kalé and Platero. Analyzed biophony and soundscape patterns using acoustic data, statistical methods, and ecological interpretation.",
             },
             {
-                role: "Soundscape Analyst / Sub-coordinator",
-                org: "Universidad de Antioquia - SGI",
-                period: "2021 - 2022",
-                desc: "Soundscape component coordinator for 'Platero' project and acoustic reviewer for 'Kalé'. Analysis of ultrasonic data.",
+                role: "Biodiversity and Environmental Safeguards Consultant",
+                org: "South Pole",
+                period: "Jul 2021 - Oct 2021",
+                desc: "Developed biodiversity strategies for AFOLU, REDD+, and afforestation/reforestation projects under VCS/CCB standards, including landscape connectivity indicators and biodiversity action plans.",
             },
             {
-                role: "Consultant (Data & Ecological Connectivity)",
-                org: "Merceditas Corp, Viable S.A.S., Fundación Cunaguaro",
-                period: "2011 - 2024",
-                desc: "Specialized consultant for over 33 environmental projects involving mammal studies, fauna management, and connectivity models.",
+                role: "Landscape Ecologist",
+                org: "VIABLE S.A.S.",
+                period: "Dec 2017 - Apr 2020",
+                desc: "Landscape fragmentation and ecological connectivity analyses for four environmental assessment projects using Circuitscape, MaxEnt, Linkage Mapper, ResistanceGA, Fragstats, and Conefor.",
             },
             {
-                role: "Fauna Component Coordinator",
+                role: "Wildlife Component Manager",
                 org: "Chemonics International",
-                period: "2017 - 2020",
-                desc: "Review and construction of reports, spatial analysis, and ecological connectivity assessments.",
-            }
+                period: "Sep 2017 - Dec 2020",
+                desc: "Led wildlife component of conservation initiatives within artisanal and small-scale mining formalization processes in Antioquia and Chocó. Coordinated field teams and developed spatial and ecological connectivity analyses.",
+            },
         ];
 
         const EDUCATION = [
             {
-                degree: "MSc. Forests and Environmental Conservation",
-                school: "Universidad Nacional de Colombia",
-                year: "2021",
+                degree: "PhD Candidate in Biology",
+                school: "Universidad de Antioquia",
+                year: "2022 - Present",
+                note: "Thesis: Landscape Heterogeneity, Bioacoustics, and Soundscape Patterns in Colombian Tropical Ecosystems. Advisor: PhD. Juan M. Daza Rojas.",
+            },
+            {
+                degree: "MSc. Forests & Environmental Conservation",
+                school: "Universidad Nacional de Colombia, Sede Medellín",
+                year: "2015 - 2021",
             },
             {
                 degree: "BSc. Biology",
@@ -173,36 +143,70 @@
                 note: "Advisor: Dr. Sergio Solari",
             },
             {
-                degree: "Specialized Course: Data Scientist's Toolbox",
+                degree: "Geodatabase Course",
+                school: "ANLA",
+                year: "2026",
+            },
+            {
+                degree: "Artificial Intelligence Training Course",
+                school: "BIG School",
+                year: "2026",
+                note: "Short training course on AI, vibe coding and automations.",
+            },
+            {
+                degree: "Data Scientist's Toolbox",
                 school: "Johns Hopkins University (Coursera)",
                 year: "2020",
-            }
+            },
         ];
 
         const SKILLS = {
-            languages: ["Spanish (Native)", "English (Professional)"],
             programming: ["R", "Python", "Julia"],
-            software: ["QGIS", "ArcGIS", "Raven", "Kaleidoscope", "Circuitscape", "Maxent"],
+            software: ["QGIS", "ArcGIS", "Google Earth Engine", "Circuitscape", "Omniscape", "Graphab", "Linkage Mapper", "MaxEnt", "Zonation", "Raven", "Kaleidoscope", "Fragstats"],
         };
 
         const PUBLICATIONS = [
             {
+                title: "A workflow to optimize spatial sampling in ecoacoustic studies",
+                journal: "Landscape Ecology",
+                year: "2026",
+                authors: "Martínez-Arias, V.M., Paniagua-Villada, C., Guerrero, M.J., Daza, J.",
+                doi: "https://doi.org/10.1007/s10980-026-02372-5",
+            },
+            {
+                title: "Echolocation pulses of the endemic Bat Saccopteryx Antioquensis (Emballonuridae) in Antioquia, Colombia",
+                journal: "Revista Chilena de Historia Natural",
+                year: "2026",
+                authors: "López-Sepúlveda, L., Zurc, D., Martínez-Arias, V., Castañeda, M., Solari, S.",
+                doi: "https://doi.org/10.1186/s40693-026-00141-x",
+            },
+            {
+                title: "Graphical representation of landscape heterogeneity identification through unsupervised acoustic analysis",
+                journal: "Methods in Ecology and Evolution",
+                year: "2025",
+                authors: "Guerrero, M.J., Sánchez-Giraldo, C., Uribe, C.A., Martínez-Arias, V.M., & Isaza, C.",
+                doi: "https://doi.org/10.1111/2041-210X.70041",
+            },
+            {
                 title: "Letting ecosystems speak for themselves: An unsupervised methodology for mapping landscape acoustic heterogeneity",
                 journal: "Environmental Modelling & Software",
                 year: "2025",
-                authors: "Rendon, N., Guerrero, M.J., Sanchez-Giraldo, C., Martinez-Arias, V.M., et al.",
+                authors: "Rendon, N., Guerrero, M.J., Sánchez-Giraldo, C., Martinez-Arias, V.M., et al.",
+                doi: "https://doi.org/10.1016/j.envsoft.2025.106373",
             },
             {
-                title: "Aves migratorias neárticas–neotropicales en el departamento de Antioquia",
-                journal: "Ornitología Colombiana",
-                year: "2024",
-                authors: "Tejada-Arango, R., Garizábal-Carmona, J.A., Martinez-Arias, V.M.",
+                title: "What is essential is invisible to the eyes: a conservation approach for poison frogs (Dendrobatidae) based on evolutionary distinctiveness and threat status",
+                journal: "Biodiversity and Conservation",
+                year: "2025",
+                authors: "Buitrago-Marulanda, B.B., Vargas-Salinas, F., Martínez-Arias, V.M. and Buitrago-Torres, L.",
+                doi: "https://doi.org/10.1007/s10531-025-03055-4",
             },
             {
                 title: "Built vs Green cover: an unequal struggle for urban space in Medellín",
                 journal: "Urban Ecosystems",
                 year: "2024",
-                authors: "Paniagua-Villada, C., Martinez-Arias, V., et al.",
+                authors: "Paniagua-Villada, C., Garizábal-Carmona, J.A., Martínez-Arias, V., Mancera-Rodríguez, N.",
+                doi: "https://doi.org/10.1007/s11252-023-01443-8",
             },
             {
                 title: "Predicted distributions of two poorly known small carnivores in Colombia",
@@ -212,18 +216,14 @@
             }
         ];
 
-        // --- COMPONENTS ---
-
         const Nav = () => {
             const [isOpen, setIsOpen] = React.useState(false);
             const [scrolled, setScrolled] = React.useState(false);
-
             React.useEffect(() => {
                 const handleScroll = () => setScrolled(window.scrollY > 50);
                 window.addEventListener('scroll', handleScroll);
                 return () => window.removeEventListener('scroll', handleScroll);
             }, []);
-
             const links = [
                 { name: 'Home', href: '#home' },
                 { name: 'About', href: '#about' },
@@ -231,224 +231,94 @@
                 { name: 'Experience', href: '#experience' },
                 { name: 'Publications', href: '#publications' },
             ];
-
             return (
-                <nav style={{
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    zIndex: 1000,
-                    backgroundColor: scrolled ? 'rgba(255, 255, 255, 0.95)' : 'transparent',
-                    boxShadow: scrolled ? '0 2px 10px rgba(0,0,0,0.1)' : 'none',
-                    transition: 'all 0.3s ease',
-                    padding: '1rem 0',
-                    color: scrolled ? '#1f2937' : 'white'
-                }}>
+                <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000, backgroundColor: scrolled ? 'rgba(255, 255, 255, 0.95)' : 'transparent', boxShadow: scrolled ? '0 2px 10px rgba(0,0,0,0.1)' : 'none', transition: 'all 0.3s ease', padding: '1rem 0', color: scrolled ? '#1f2937' : 'white' }}>
                     <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <a href="#" style={{ fontWeight: 700, fontSize: '1.2rem', fontFamily: 'Merriweather, serif' }}>
-                            V.M. Martinez-Arias
-                        </a>
-
-                        {/* Desktop Menu */}
+                        <a href="#" style={{ fontWeight: 700, fontSize: '1.2rem', fontFamily: 'Merriweather, serif' }}>V.M. Martinez-Arias</a>
                         <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }} className="desktop-menu">
                             {links.map(link => (
-                                <a key={link.name} href={link.href} style={{ fontSize: '0.95rem', fontWeight: 500 }}>
-                                    {link.name}
-                                </a>
+                                <a key={link.name} href={link.href} style={{ fontSize: '0.95rem', fontWeight: 500 }}>{link.name}</a>
                             ))}
-                            <a href={PERSONAL_INFO.scholar} target="_blank" rel="noreferrer" 
-                               style={{ 
-                                   padding: '0.5rem 1rem', 
-                                   backgroundColor: scrolled ? 'var(--primary)' : 'rgba(255,255,255,0.2)', 
-                                   color: 'white', 
-                                   borderRadius: '4px',
-                                   fontSize: '0.9rem'
-                               }}>
-                                Google Scholar
-                            </a>
+                            <a href={PERSONAL_INFO.scholar} target="_blank" rel="noreferrer" style={{ padding: '0.5rem 1rem', backgroundColor: scrolled ? 'var(--primary)' : 'rgba(255,255,255,0.2)', color: 'white', borderRadius: '4px', fontSize: '0.9rem' }}>Google Scholar</a>
                         </div>
-
-                        {/* Mobile Toggle */}
                         <button onClick={() => setIsOpen(!isOpen)} style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer' }} className="mobile-toggle">
                             {isOpen ? <Icons.X size={24} /> : <Icons.Menu size={24} />}
                         </button>
                     </div>
-
-                    {/* Mobile Menu */}
                     {isOpen && (
-                        <div style={{
-                            position: 'absolute',
-                            top: '100%',
-                            left: 0,
-                            right: 0,
-                            backgroundColor: 'white',
-                            padding: '1rem',
-                            boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '1rem',
-                            color: '#1f2937'
-                        }}>
+                        <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, backgroundColor: 'white', padding: '1rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', display: 'flex', flexDirection: 'column', gap: '1rem', color: '#1f2937' }}>
                             {links.map(link => (
-                                <a key={link.name} href={link.href} onClick={() => setIsOpen(false)} style={{ padding: '0.5rem' }}>
-                                    {link.name}
-                                </a>
+                                <a key={link.name} href={link.href} onClick={() => setIsOpen(false)} style={{ padding: '0.5rem' }}>{link.name}</a>
                             ))}
                         </div>
                     )}
-                    
-                    <style>{`
-                        @media (max-width: 768px) {
-                            .desktop-menu { display: none !important; }
-                        }
-                        @media (min-width: 769px) {
-                            .mobile-toggle { display: none !important; }
-                        }
-                    `}</style>
+                    <style>{`@media (max-width: 768px) { .desktop-menu { display: none !important; } } @media (min-width: 769px) { .mobile-toggle { display: none !important; } }`}</style>
                 </nav>
             );
         };
 
-        const Hero = () => {
-            return (
-                <section id="home" style={{
-                    height: '100vh',
-                    backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url("hero.jpg")`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    textAlign: 'center',
-                    color: 'white',
-                    padding: '0 20px'
-                }}>
-                    {/* Fallback for background image if hero.jpg fails loading (using JS to handle style fallback is tricky, so we rely on user uploading the file, but here is a safe default in case) */}
-                    <img 
-                        src="hero.jpg" 
-                        style={{display: 'none'}} 
-                        onError={(e) => {
-                            const section = document.getElementById('home');
-                            // Fallback to a nice forest gradient if image is missing
-                            section.style.backgroundImage = `linear-gradient(to bottom right, #2c5530, #1a2f1d)`;
-                        }}
-                    />
-                    
-                    <div style={{ maxWidth: '800px', animation: 'fadeIn 1s ease-out' }}>
-                        <h1 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', marginBottom: '1rem', color: 'white' }}>
-                            {PERSONAL_INFO.name}
-                        </h1>
-                        <p style={{ fontSize: 'clamp(1.1rem, 2vw, 1.5rem)', marginBottom: '2rem', fontWeight: 300, opacity: 0.9 }}>
-                            {PERSONAL_INFO.title}
-                        </p>
-                        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                            <span style={{ border: '1px solid rgba(255,255,255,0.5)', padding: '0.5rem 1rem', borderRadius: '50px', backdropFilter: 'blur(5px)' }}>Ecoacoustics</span>
-                            <span style={{ border: '1px solid rgba(255,255,255,0.5)', padding: '0.5rem 1rem', borderRadius: '50px', backdropFilter: 'blur(5px)' }}>Landscape Ecology</span>
-                            <span style={{ border: '1px solid rgba(255,255,255,0.5)', padding: '0.5rem 1rem', borderRadius: '50px', backdropFilter: 'blur(5px)' }}>Mammalogy</span>
+        const Hero = () => (
+            <section id="home" style={{ height: '100vh', backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url("hero.jpg")`, backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', color: 'white', padding: '0 20px' }}>
+                <img src="hero.jpg" style={{display: 'none'}} onError={(e) => { const section = document.getElementById('home'); section.style.backgroundImage = `linear-gradient(to bottom right, #2c5530, #1a2f1d)`; }} />
+                <div style={{ maxWidth: '800px', animation: 'fadeIn 1s ease-out' }}>
+                    <h1 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', marginBottom: '1rem', color: 'white' }}>{PERSONAL_INFO.name}</h1>
+                    <p style={{ fontSize: 'clamp(1.1rem, 2vw, 1.5rem)', marginBottom: '2rem', fontWeight: 300, opacity: 0.9 }}>{PERSONAL_INFO.title}</p>
+                    <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                        <span style={{ border: '1px solid rgba(255,255,255,0.5)', padding: '0.5rem 1rem', borderRadius: '50px', backdropFilter: 'blur(5px)' }}>Ecoacoustics</span>
+                        <span style={{ border: '1px solid rgba(255,255,255,0.5)', padding: '0.5rem 1rem', borderRadius: '50px', backdropFilter: 'blur(5px)' }}>Landscape Ecology</span>
+                        <span style={{ border: '1px solid rgba(255,255,255,0.5)', padding: '0.5rem 1rem', borderRadius: '50px', backdropFilter: 'blur(5px)' }}>Mammalogy</span>
+                    </div>
+                </div>
+            </section>
+        );
+
+        const About = () => (
+            <section id="about" className="section-padding" style={{ backgroundColor: 'white' }}>
+                <div className="container" style={{ display: 'flex', flexDirection: 'column', gap: '4rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '3rem', alignItems: 'center' }}>
+                        <div style={{ position: 'relative' }}>
+                            <div style={{ position: 'absolute', top: '20px', left: '20px', right: '-20px', bottom: '-20px', backgroundColor: 'var(--secondary)', opacity: 0.2, borderRadius: '8px', zIndex: 0 }}></div>
+                            <img src="profile.jpg" alt="Victor M. Martinez-Arias" onError={(e) => { e.target.onerror = null; e.target.src="https://images.unsplash.com/photo-1534531173927-aeb928d54385?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"; }} style={{ width: '100%', borderRadius: '8px', position: 'relative', zIndex: 1, boxShadow: '0 10px 30px rgba(0,0,0,0.1)', aspectRatio: '3/4', objectFit: 'cover' }} />
+                        </div>
+                        <div>
+                            <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>About Me</h2>
+                            <p style={{ fontSize: '1.1rem', color: 'var(--text-light)', marginBottom: '1.5rem' }}>{PERSONAL_INFO.bio}</p>
+                            <p style={{ fontSize: '1.1rem', color: 'var(--text-light)', marginBottom: '2rem' }}>
+                                I am a proud member of the <strong>GHA (Grupo Herpetológico de Antioquia)</strong> at Universidad de Antioquia. My work bridges the gap between raw data and conservation action, employing advanced technological tools to understand how sound and landscape structure influence biodiversity.
+                            </p>
+                            <div style={{ display: 'flex', gap: '1rem' }}>
+                                <a href={`mailto:${PERSONAL_INFO.email}`} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--primary)', fontWeight: 600 }}><Icons.Mail size={20} /> Contact Me</a>
+                                <a href={PERSONAL_INFO.scholar} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--primary)', fontWeight: 600 }}><Icons.BookOpen size={20} /> Publications</a>
+                            </div>
                         </div>
                     </div>
-                </section>
-            );
-        };
-
-        const About = () => {
-            return (
-                <section id="about" className="section-padding" style={{ backgroundColor: 'white' }}>
-                    <div className="container" style={{ display: 'flex', flexDirection: 'column', gap: '4rem' }}>
-                        
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '3rem', alignItems: 'center' }}>
-                            <div style={{ position: 'relative' }}>
-                                <div style={{
-                                    position: 'absolute',
-                                    top: '20px',
-                                    left: '20px',
-                                    right: '-20px',
-                                    bottom: '-20px',
-                                    backgroundColor: 'var(--secondary)',
-                                    opacity: 0.2,
-                                    borderRadius: '8px',
-                                    zIndex: 0
-                                }}></div>
-                                <img 
-                                    src="profile.jpg" 
-                                    alt="Victor M. Martinez-Arias" 
-                                    onError={(e) => {
-                                        e.target.onerror = null; 
-                                        e.target.src="https://images.unsplash.com/photo-1534531173927-aeb928d54385?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"; // Fallback generic person
-                                    }}
-                                    style={{ 
-                                        width: '100%', 
-                                        borderRadius: '8px', 
-                                        position: 'relative', 
-                                        zIndex: 1, 
-                                        boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
-                                        aspectRatio: '3/4',
-                                        objectFit: 'cover'
-                                    }} 
-                                />
-                            </div>
-                            
+                    <div style={{ backgroundColor: 'var(--bg-light)', padding: '2rem', borderRadius: '12px' }}>
+                        <h3 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Icons.Layers size={24} /> Technical Skills</h3>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '2rem' }}>
                             <div>
-                                <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>About Me</h2>
-                                <p style={{ fontSize: '1.1rem', color: 'var(--text-light)', marginBottom: '1.5rem' }}>
-                                    {PERSONAL_INFO.bio}
-                                </p>
-                                <p style={{ fontSize: '1.1rem', color: 'var(--text-light)', marginBottom: '2rem' }}>
-                                    I am a proud member of the <strong>GHA (Grupo Herpetológico de Antioquia)</strong> at Universidad de Antioquia. My work bridges the gap between raw data and conservation action, employing advanced technological tools to understand how sound and landscape structure influence biodiversity.
-                                </p>
-                                
-                                <div style={{ display: 'flex', gap: '1rem' }}>
-                                    <a href={`mailto:${PERSONAL_INFO.email}`} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--primary)', fontWeight: 600 }}>
-                                        <Icons.Mail size={20} /> Contact Me
-                                    </a>
-                                    <a href={PERSONAL_INFO.scholar} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--primary)', fontWeight: 600 }}>
-                                        <Icons.BookOpen size={20} /> Publications
-                                    </a>
+                                <h4 style={{ fontSize: '1rem', color: 'var(--text-main)', marginBottom: '1rem' }}>Data & Programming</h4>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                    {SKILLS.programming.map(skill => (
+                                        <span key={skill} style={{ fontSize: '0.9rem', padding: '0.25rem 0.75rem', backgroundColor: 'white', border: '1px solid #e5e7eb', borderRadius: '4px' }}>{skill}</span>
+                                    ))}
+                                </div>
+                            </div>
+                            <div>
+                                <h4 style={{ fontSize: '1rem', color: 'var(--text-main)', marginBottom: '1rem' }}>Software & GIS</h4>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                    {SKILLS.software.map(skill => (
+                                        <span key={skill} style={{ fontSize: '0.9rem', padding: '0.25rem 0.75rem', backgroundColor: 'white', border: '1px solid #e5e7eb', borderRadius: '4px' }}>{skill}</span>
+                                    ))}
                                 </div>
                             </div>
                         </div>
-
-                        {/* Skills Section */}
-                        <div style={{ backgroundColor: 'var(--bg-light)', padding: '2rem', borderRadius: '12px' }}>
-                            <h3 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                <Icons.Layers size={24} /> Technical Skills
-                            </h3>
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '2rem' }}>
-                                <div>
-                                    <h4 style={{ fontSize: '1rem', color: 'var(--text-main)', marginBottom: '1rem' }}>Data & Programming</h4>
-                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                                        {SKILLS.programming.map(skill => (
-                                            <span key={skill} style={{ fontSize: '0.9rem', padding: '0.25rem 0.75rem', backgroundColor: 'white', border: '1px solid #e5e7eb', borderRadius: '4px' }}>
-                                                {skill}
-                                            </span>
-                                        ))}
-                                    </div>
-                                </div>
-                                <div>
-                                    <h4 style={{ fontSize: '1rem', color: 'var(--text-main)', marginBottom: '1rem' }}>Software & GIS</h4>
-                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                                        {SKILLS.software.map(skill => (
-                                            <span key={skill} style={{ fontSize: '0.9rem', padding: '0.25rem 0.75rem', backgroundColor: 'white', border: '1px solid #e5e7eb', borderRadius: '4px' }}>
-                                                {skill}
-                                            </span>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
-                </section>
-            );
-        };
+                </div>
+            </section>
+        );
 
         const ResearchInterests = () => {
-            const getIcon = (name) => {
-                const IconComponent = Icons[name];
-                return IconComponent ? <IconComponent size={32} /> : null;
-            };
-
+            const getIcon = (name) => { const IconComponent = Icons[name]; return IconComponent ? <IconComponent size={32} /> : null; };
             return (
                 <section id="research" className="section-padding" style={{ backgroundColor: 'var(--bg-light)' }}>
                     <div className="container">
@@ -456,43 +326,16 @@
                             <h2>Research Interests</h2>
                             <p style={{ color: 'var(--text-light)' }}>My academic and professional journey focuses on these key pillars.</p>
                         </div>
-
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
                             {INTERESTS.map((item, idx) => (
-                                <div key={idx} style={{ 
-                                    backgroundColor: 'white', 
-                                    borderRadius: '12px', 
-                                    overflow: 'hidden', 
-                                    boxShadow: '0 4px 6px rgba(0,0,0,0.05)',
-                                    transition: 'transform 0.3s ease',
-                                    height: '100%'
-                                }} className="btn-hover">
+                                <div key={idx} style={{ backgroundColor: 'white', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 6px rgba(0,0,0,0.05)', transition: 'transform 0.3s ease', height: '100%' }} className="btn-hover">
                                     {item.title === 'Mammalogy' && (
                                         <div style={{ height: '200px', overflow: 'hidden' }}>
-                                            <img 
-                                                src="mammal.jpg" 
-                                                alt="Mammalogy" 
-                                                onError={(e) => {
-                                                    e.target.onerror = null;
-                                                    e.target.src="https://images.unsplash.com/photo-1570530869677-1834226f3162?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"; // Fallback opossum/nature
-                                                }}
-                                                style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-                                            />
+                                            <img src="mammal.jpg" alt="Mammalogy" onError={(e) => { e.target.onerror = null; e.target.src="https://images.unsplash.com/photo-1570530869677-1834226f3162?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"; }} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                         </div>
                                     )}
                                     <div style={{ padding: '2rem' }}>
-                                        <div style={{ 
-                                            width: '60px', height: '60px', 
-                                            backgroundColor: 'var(--bg-light)', 
-                                            borderRadius: '50%', 
-                                            display: 'flex', 
-                                            alignItems: 'center', 
-                                            justifyContent: 'center',
-                                            color: 'var(--primary)',
-                                            marginBottom: '1.5rem'
-                                        }}>
-                                            {getIcon(item.icon)}
-                                        </div>
+                                        <div style={{ width: '60px', height: '60px', backgroundColor: 'var(--bg-light)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)', marginBottom: '1.5rem' }}>{getIcon(item.icon)}</div>
                                         <h3 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>{item.title}</h3>
                                         <p style={{ color: 'var(--text-light)' }}>{item.description}</p>
                                     </div>
@@ -504,190 +347,125 @@
             );
         };
 
-        const Timeline = () => {
-            return (
-                <section id="experience" className="section-padding" style={{ backgroundColor: 'white' }}>
-                    <div className="container">
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '4rem' }}>
-                            
-                            {/* Experience Column */}
-                            <div>
-                                <h2 style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
-                                    <Icons.Briefcase /> Professional Experience
-                                </h2>
-                                <div style={{ borderLeft: '2px solid var(--bg-light)', paddingLeft: '2rem', display: 'flex', flexDirection: 'column', gap: '3rem' }}>
-                                    {EXPERIENCE.map((job, idx) => (
-                                        <div key={idx} style={{ position: 'relative' }}>
-                                            <div style={{ 
-                                                position: 'absolute', 
-                                                left: '-2.6rem', 
-                                                top: '0.25rem', 
-                                                width: '1.2rem', 
-                                                height: '1.2rem', 
-                                                backgroundColor: 'var(--primary)', 
-                                                borderRadius: '50%',
-                                                border: '4px solid white'
-                                            }}></div>
-                                            <span style={{ fontSize: '0.9rem', color: 'var(--secondary)', fontWeight: 600 }}>{job.period}</span>
-                                            <h3 style={{ fontSize: '1.2rem', margin: '0.5rem 0' }}>{job.role}</h3>
-                                            <h4 style={{ fontSize: '1rem', fontWeight: 500, color: 'var(--text-light)', marginBottom: '0.5rem' }}>{job.org}</h4>
-                                            <p style={{ fontSize: '0.95rem', color: 'var(--text-light)' }}>{job.desc}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Education Column */}
-                            <div>
-                                <h2 style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
-                                    <Icons.GraduationCap /> Education
-                                </h2>
-                                <div style={{ borderLeft: '2px solid var(--bg-light)', paddingLeft: '2rem', display: 'flex', flexDirection: 'column', gap: '3rem' }}>
-                                    {EDUCATION.map((edu, idx) => (
-                                        <div key={idx} style={{ position: 'relative' }}>
-                                            <div style={{ 
-                                                position: 'absolute', 
-                                                left: '-2.6rem', 
-                                                top: '0.25rem', 
-                                                width: '1.2rem', 
-                                                height: '1.2rem', 
-                                                backgroundColor: 'var(--accent)', 
-                                                borderRadius: '50%',
-                                                border: '4px solid white'
-                                            }}></div>
-                                            <span style={{ fontSize: '0.9rem', color: 'var(--secondary)', fontWeight: 600 }}>{edu.year}</span>
-                                            <h3 style={{ fontSize: '1.2rem', margin: '0.5rem 0' }}>{edu.degree}</h3>
-                                            <h4 style={{ fontSize: '1rem', fontWeight: 500, color: 'var(--text-light)' }}>{edu.school}</h4>
-                                            {edu.note && <p style={{ fontSize: '0.9rem', color: 'var(--text-light)', marginTop: '0.5rem', fontStyle: 'italic' }}>{edu.note}</p>}
-                                        </div>
-                                    ))}
-                                </div>
-                                
-                                <div style={{ marginTop: '4rem' }}>
-                                    <img 
-                                        src="team.jpg" 
-                                        alt="Field Team" 
-                                        onError={(e) => {
-                                            e.target.onerror = null;
-                                            e.target.src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"; // Fallback team
-                                        }}
-                                        style={{ width: '100%', borderRadius: '12px', filter: 'grayscale(100%)', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }} 
-                                    />
-                                    <p style={{ fontSize: '0.85rem', color: 'var(--text-light)', textAlign: 'center', marginTop: '0.5rem' }}>Field work expedition</p>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </section>
-            );
-        };
-
-        const Publications = () => {
-            return (
-                <section id="publications" className="section-padding" style={{ backgroundColor: 'var(--primary)', color: 'white' }}>
-                    <div className="container">
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem', flexWrap: 'wrap', gap: '1rem' }}>
-                            <div>
-                                <h2 style={{ color: 'white', marginBottom: '0.5rem' }}>Selected Publications</h2>
-                                <p style={{ opacity: 0.8 }}>Recent contributions to science</p>
-                            </div>
-                            <a href={PERSONAL_INFO.scholar} target="_blank" rel="noreferrer" style={{ 
-                                display: 'flex', alignItems: 'center', gap: '0.5rem', 
-                                backgroundColor: 'rgba(255,255,255,0.1)', padding: '0.75rem 1.5rem', 
-                                borderRadius: '50px', backdropFilter: 'blur(5px)', transition: 'background 0.3s'
-                            }}>
-                                View all on Google Scholar <Icons.ExternalLink size={16} />
-                            </a>
-                        </div>
-
-                        <div style={{ display: 'grid', gap: '1.5rem' }}>
-                            {PUBLICATIONS.map((pub, idx) => (
-                                <div key={idx} style={{ 
-                                    backgroundColor: 'rgba(255,255,255,0.05)', 
-                                    padding: '1.5rem', 
-                                    borderRadius: '8px',
-                                    borderLeft: '4px solid var(--accent)'
-                                }}>
-                                    <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', color: 'white' }}>{pub.title}</h3>
-                                    <div style={{ fontSize: '0.9rem', opacity: 0.9, marginBottom: '0.5rem' }}>
-                                        <span style={{ fontWeight: 600 }}>{pub.journal}</span> • {pub.year}
+        const Timeline = () => (
+            <section id="experience" className="section-padding" style={{ backgroundColor: 'white' }}>
+                <div className="container">
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '4rem' }}>
+                        <div>
+                            <h2 style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}><Icons.Briefcase /> Professional Experience</h2>
+                            <div style={{ borderLeft: '2px solid var(--bg-light)', paddingLeft: '2rem', display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+                                {EXPERIENCE.map((job, idx) => (
+                                    <div key={idx} style={{ position: 'relative' }}>
+                                        <div style={{ position: 'absolute', left: '-2.6rem', top: '0.25rem', width: '1.2rem', height: '1.2rem', backgroundColor: 'var(--primary)', borderRadius: '50%', border: '4px solid white' }}></div>
+                                        <span style={{ fontSize: '0.9rem', color: 'var(--secondary)', fontWeight: 600 }}>{job.period}</span>
+                                        <h3 style={{ fontSize: '1.2rem', margin: '0.5rem 0' }}>{job.role}</h3>
+                                        <h4 style={{ fontSize: '1rem', fontWeight: 500, color: 'var(--text-light)', marginBottom: '0.5rem' }}>{job.org}</h4>
+                                        <p style={{ fontSize: '0.95rem', color: 'var(--text-light)' }}>{job.desc}</p>
                                     </div>
-                                    <p style={{ fontSize: '0.9rem', opacity: 0.7 }}>{pub.authors}</p>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
+                        </div>
+                        <div>
+                            <h2 style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}><Icons.GraduationCap /> Education</h2>
+                            <div style={{ borderLeft: '2px solid var(--bg-light)', paddingLeft: '2rem', display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+                                {EDUCATION.map((edu, idx) => (
+                                    <div key={idx} style={{ position: 'relative' }}>
+                                        <div style={{ position: 'absolute', left: '-2.6rem', top: '0.25rem', width: '1.2rem', height: '1.2rem', backgroundColor: 'var(--accent)', borderRadius: '50%', border: '4px solid white' }}></div>
+                                        <span style={{ fontSize: '0.9rem', color: 'var(--secondary)', fontWeight: 600 }}>{edu.year}</span>
+                                        <h3 style={{ fontSize: '1.2rem', margin: '0.5rem 0' }}>{edu.degree}</h3>
+                                        <h4 style={{ fontSize: '1rem', fontWeight: 500, color: 'var(--text-light)' }}>{edu.school}</h4>
+                                        {edu.note && <p style={{ fontSize: '0.9rem', color: 'var(--text-light)', marginTop: '0.5rem', fontStyle: 'italic' }}>{edu.note}</p>}
+                                    </div>
+                                ))}
+                            </div>
+                            <div style={{ marginTop: '4rem' }}>
+                                <img src="team.jpg" alt="Field Team" onError={(e) => { e.target.onerror = null; e.target.src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"; }} style={{ width: '100%', borderRadius: '12px', filter: 'grayscale(100%)', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }} />
+                                <p style={{ fontSize: '0.85rem', color: 'var(--text-light)', textAlign: 'center', marginTop: '0.5rem' }}>Field work expedition</p>
+                            </div>
                         </div>
                     </div>
-                </section>
-            );
-        };
-
-        const Footer = () => {
-            return (
-                <footer style={{ backgroundColor: '#111827', color: 'white', padding: '4rem 0' }}>
-                    <div className="container">
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '3rem', marginBottom: '3rem' }}>
-                            
-                            <div>
-                                <h3 style={{ color: 'white', marginBottom: '1rem' }}>{PERSONAL_INFO.name}</h3>
-                                <p style={{ color: '#9ca3af', marginBottom: '1.5rem' }}>
-                                    Biologist dedicated to understanding and conserving Neotropical biodiversity through ecoacoustics and landscape ecology.
-                                </p>
-                                <div style={{ display: 'flex', gap: '1rem' }}>
-                                    <a href={`mailto:${PERSONAL_INFO.email}`} style={{ color: 'white', opacity: 0.7 }}><Icons.Mail /></a>
-                                    <a href={PERSONAL_INFO.scholar} style={{ color: 'white', opacity: 0.7 }}><Icons.BookOpen /></a>
-                                </div>
-                            </div>
-
-                            <div>
-                                <h4 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.1rem' }}>Contact</h4>
-                                <ul style={{ listStyle: 'none', padding: 0, color: '#9ca3af', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                                    <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                        <Icons.Mail size={16} /> {PERSONAL_INFO.email}
-                                    </li>
-                                    <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                        <Icons.MapPin size={16} /> {PERSONAL_INFO.location}
-                                    </li>
-                                    <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                        <Icons.ExternalLink size={16} /> ORCID: {PERSONAL_INFO.orcid}
-                                    </li>
-                                </ul>
-                            </div>
-                            
-                            <div>
-                                <h4 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.1rem' }}>Affiliation</h4>
-                                <p style={{ color: '#9ca3af', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Escudo_de_la_Universidad_de_Antioquia.svg" alt="UdeA" style={{ width: '24px', filter: 'invert(1)' }} />
-                                    Universidad de Antioquia
-                                </p>
-                                <p style={{ color: '#9ca3af', marginTop: '0.5rem' }}>
-                                    GHA - Grupo Herpetológico de Antioquia
-                                </p>
-                            </div>
-
-                        </div>
-                        
-                        <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '2rem', textAlign: 'center', color: '#6b7280', fontSize: '0.9rem' }}>
-                            &copy; {new Date().getFullYear()} Victor M. Martinez-Arias. All rights reserved.
-                        </div>
-                    </div>
-                </footer>
-            );
-        };
-
-        const App = () => {
-            return (
-                <div>
-                    <Nav />
-                    <Hero />
-                    <About />
-                    <ResearchInterests />
-                    <Timeline />
-                    <Publications />
-                    <Footer />
                 </div>
-            );
-        };
+            </section>
+        );
+
+        const Publications = () => (
+            <section id="publications" className="section-padding" style={{ backgroundColor: 'var(--primary)', color: 'white' }}>
+                <div className="container">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem', flexWrap: 'wrap', gap: '1rem' }}>
+                        <div>
+                            <h2 style={{ color: 'white', marginBottom: '0.5rem' }}>Selected Publications</h2>
+                            <p style={{ opacity: 0.8 }}>Recent contributions to science</p>
+                        </div>
+                        <a href={PERSONAL_INFO.scholar} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', backgroundColor: 'rgba(255,255,255,0.1)', padding: '0.75rem 1.5rem', borderRadius: '50px', backdropFilter: 'blur(5px)', transition: 'background 0.3s' }}>
+                            View all on Google Scholar <Icons.ExternalLink size={16} />
+                        </a>
+                    </div>
+                    <div style={{ display: 'grid', gap: '1.5rem' }}>
+                        {PUBLICATIONS.map((pub, idx) => (
+                            <div key={idx} style={{ backgroundColor: 'rgba(255,255,255,0.05)', padding: '1.5rem', borderRadius: '8px', borderLeft: '4px solid var(--accent)' }}>
+                                <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', color: 'white' }}>
+                                    {pub.doi ? (
+                                        <a href={pub.doi} target="_blank" rel="noreferrer" style={{ color: 'white', textDecoration: 'underline', textDecorationColor: 'rgba(255,255,255,0.3)' }}>{pub.title}</a>
+                                    ) : pub.title}
+                                </h3>
+                                <div style={{ fontSize: '0.9rem', opacity: 0.9, marginBottom: '0.5rem' }}>
+                                    <span style={{ fontWeight: 600 }}>{pub.journal}</span> • {pub.year}
+                                </div>
+                                <p style={{ fontSize: '0.9rem', opacity: 0.7 }}>{pub.authors}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        );
+
+        const Footer = () => (
+            <footer style={{ backgroundColor: '#111827', color: 'white', padding: '4rem 0' }}>
+                <div className="container">
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '3rem', marginBottom: '3rem' }}>
+                        <div>
+                            <h3 style={{ color: 'white', marginBottom: '1rem' }}>{PERSONAL_INFO.name}</h3>
+                            <p style={{ color: '#9ca3af', marginBottom: '1.5rem' }}>Biologist dedicated to understanding and conserving Neotropical biodiversity through ecoacoustics and landscape ecology.</p>
+                            <div style={{ display: 'flex', gap: '1rem' }}>
+                                <a href={`mailto:${PERSONAL_INFO.email}`} style={{ color: 'white', opacity: 0.7 }}><Icons.Mail /></a>
+                                <a href={PERSONAL_INFO.scholar} style={{ color: 'white', opacity: 0.7 }}><Icons.BookOpen /></a>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.1rem' }}>Contact</h4>
+                            <ul style={{ listStyle: 'none', padding: 0, color: '#9ca3af', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                                <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Icons.Mail size={16} /> {PERSONAL_INFO.email}</li>
+                                <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Icons.MapPin size={16} /> {PERSONAL_INFO.location}</li>
+                                <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Icons.ExternalLink size={16} /> ORCID: {PERSONAL_INFO.orcid}</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.1rem' }}>Affiliation</h4>
+                            <p style={{ color: '#9ca3af', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Escudo_de_la_Universidad_de_Antioquia.svg" alt="UdeA" style={{ width: '24px', filter: 'invert(1)' }} />
+                                Universidad de Antioquia
+                            </p>
+                            <p style={{ color: '#9ca3af', marginTop: '0.5rem' }}>GHA - Grupo Herpetológico de Antioquia</p>
+                        </div>
+                    </div>
+                    <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '2rem', textAlign: 'center', color: '#6b7280', fontSize: '0.9rem' }}>
+                        &copy; {new Date().getFullYear()} Victor M. Martinez-Arias. All rights reserved.
+                    </div>
+                </div>
+            </footer>
+        );
+
+        const App = () => (
+            <div>
+                <Nav />
+                <Hero />
+                <About />
+                <ResearchInterests />
+                <Timeline />
+                <Publications />
+                <Footer />
+            </div>
+        );
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
